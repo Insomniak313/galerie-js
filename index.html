@@ -3,24 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Galerie intéractive</title>
+    <title>TP2 — Fonctions</title>
     <style>
       body {
         font-family: sans-serif;
         margin: 1rem;
       }
+      img {
+        max-width: 120px;
+        vertical-align: top;
+      }
+      .aperçu {
+        margin: 1rem 0;
+      }
     </style>
   </head>
   <body>
-    <h1>TP1 — Découverte de l'environnement</h1>
+    <h1>TP2 — Fonctions : liste, filtre, sélection</h1>
+    <p>
+      Le catalogue est décrit dans <code>main.js</code> (tableau d’objets). Ce TP porte sur les
+      <strong>fonctions</strong> qui filtrent et sélectionnent des entrées dans ce tableau. Les
+      résultats se lisent dans la <strong>console</strong> (F12). La manipulation du DOM (afficher
+      la liste à l’écran, réagir aux clics) sera vue au <strong>TP suivant</strong>.
+    </p>
 
+    <p class="aperçu">
+      Aperçu statique des fichiers (HTML fixe, sans JavaScript sur ces balises) :
+      <img src="assets/nature-1.svg" alt="Prairie" />
+      <img src="assets/nature-2.svg" alt="Montagne" />
+      <img src="assets/ville-1.svg" alt="Quartier" />
+      <img src="assets/ville-2.svg" alt="Silhouettes" />
+    </p>
 
     <h2>À faire</h2>
     <ul>
-      <li>Ouvrir la page dans le navigateur.</li>
-      <li>Ouvrir la console (F12), vérifier le message.</li>
-      <li>Onglet Réseau : recharger, vérifier que main.js est bien chargé.</li>
-      <li>Modifier le texte du console.log dans main.js, enregistrer, recharger.</li>
+      <li>Ouvrir la console : vérifier les messages et les tableaux renvoyés par le filtrage.</li>
+      <li>
+        Dans la console, tester vous-même : <code>filtrerParCategorie(catalogue, "nature")</code>,
+        <code>selectionner(trouverParId(catalogue, 1))</code> puis <code>imageSelectionnee</code>.
+      </li>
+      <li>Ajouter une entrée au tableau <code>catalogue</code> (nouvelle image dans <code>assets/</code>).</li>
+      <li>
+        Écrire une fonction <code>compterParCategorie(liste, categorie)</code> qui retourne le nombre
+        d’images de cette catégorie ; l’appeler dans un <code>console.log</code>.
+      </li>
     </ul>
 
     <script src="main.js"></script>
