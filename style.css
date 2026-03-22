@@ -1,0 +1,44 @@
+body {
+  font-family: sans-serif;
+  margin: 1rem;
+  max-width: 40rem;
+}
+.carousel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.carousel figure {
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+.carousel img {
+  max-width: 100%;
+  max-height: 55vh;
+  display: block;
+  margin: 0 auto;
+}
+.carousel button {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+#indicateurs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+#indicateurs button {
+  min-width: 2rem;
+  cursor: pointer;
+}
+#indicateurs button.actif {
+  font-weight: bold;
+  outline: 2px solid #2563eb;
+}
+#compteur {
+  font-size: 0.9rem;
+  color: #444;
+}

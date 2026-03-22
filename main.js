@@ -1,6 +1,6 @@
 /**
- * TP2 — Fonctions sur une liste d’images (données en mémoire uniquement).
- * Pas de manipulation du DOM ici : tout se vérifie dans la console (F12).
+ * TP3 — Carrousel : données + fonctions du TP2, affichage et événements (DOM).
+ * Les chemins d’images sont relatifs à la page HTML (ici : dossier racine du projet).
  */
 
 const catalogue = [
@@ -10,9 +10,6 @@ const catalogue = [
   { id: 4, titre: "Silhouettes", categorie: "ville", fichier: "assets/ville-2.svg" },
 ];
 
-/**
- * Retourne une nouvelle liste : tout le catalogue, ou une seule catégorie.
- */
 function filtrerParCategorie(liste, categorie) {
   if (categorie === "toutes") {
     return liste;
@@ -22,35 +19,96 @@ function filtrerParCategorie(liste, categorie) {
   });
 }
 
-/**
- * Trouve une image dans une liste à partir de son id (ou undefined si absent).
- */
 function trouverParId(liste, id) {
   return liste.find(function (image) {
     return image.id === id;
   });
 }
 
-/** Image actuellement « choisie » dans le programme (donnée, pas l’écran). */
 let imageSelectionnee = null;
 
-/**
- * Enregistre l’image sélectionnée. La page ne change pas : on pourra brancher l’affichage au TP suivant.
- */
 function selectionner(image) {
   imageSelectionnee = image;
   return imageSelectionnee;
 }
 
-/* --- Démonstrations dans la console (exemples d’utilisation des fonctions) --- */
+/* ---------- Carrousel (index dans la liste affichée) ---------- */
 
-const uniquementNature = filtrerParCategorie(catalogue, "nature");
-console.log("Filtrage nature :", uniquementNature);
+let slides = catalogue;
+let indexCourant = 0;
 
-const uniquementVille = filtrerParCategorie(catalogue, "ville");
-console.log("Filtrage ville :", uniquementVille);
+function afficherSlide(nouvelIndex) {
+  const imgEl = document.getElementById("image-principale");
+  const legendeEl = document.getElementById("legende");
+  const compteurEl = document.getElementById("compteur");
+  const btnPrec = document.getElementById("precedent");
+  const btnSuiv = document.getElementById("suivant");
 
-selectionner(trouverParId(catalogue, 3));
-console.log("Après sélection de l’id 3 :", imageSelectionnee);
+  if (slides.length === 0) {
+    imgEl.removeAttribute("src");
+    imgEl.alt = "";
+    legendeEl.textContent = "Aucune image dans cette sélection.";
+    compteurEl.textContent = "";
+    btnPrec.disabled = true;
+    btnSuiv.disabled = true;
+    construireIndicateurs();
+    return;
+  }
 
-console.log("TP2 : catalogue de", catalogue.length, "images — ouvrez la console si besoin.");
+  indexCourant = ((nouvelIndex % slides.length) + slides.length) % slides.length;
+  const image = slides[indexCourant];
+  selectionner(image);
+
+  imgEl.src = image.fichier;
+  imgEl.alt = image.titre;
+  legendeEl.textContent = image.titre + " — " + image.categorie;
+  compteurEl.textContent = String(indexCourant + 1) + " / " + String(slides.length);
+
+  btnPrec.disabled = false;
+  btnSuiv.disabled = false;
+
+  construireIndicateurs();
+}
+
+function allerPrecedent() {
+  afficherSlide(indexCourant - 1);
+}
+
+function allerSuivant() {
+  afficherSlide(indexCourant + 1);
+}
+
+/**
+ * Recrée les boutons-pastilles (exemple de création d’éléments dans le DOM).
+ */
+function construireIndicateurs() {
+  const conteneur = document.getElementById("indicateurs");
+  conteneur.innerHTML = "";
+
+  for (let i = 0; i < slides.length; i++) {
+    const bouton = document.createElement("button");
+    bouton.type = "button";
+    bouton.textContent = String(i + 1);
+    bouton.setAttribute("aria-label", "Image " + String(i + 1));
+    if (i === indexCourant) {
+      bouton.classList.add("actif");
+    }
+    const index = i;
+    bouton.addEventListener("click", function () {
+      afficherSlide(index);
+    });
+    conteneur.appendChild(bouton);
+  }
+}
+
+function appliquerFiltre() {
+  const valeur = document.getElementById("filtre").value;
+  slides = filtrerParCategorie(catalogue, valeur);
+  afficherSlide(0);
+}
+
+document.getElementById("precedent").addEventListener("click", allerPrecedent);
+document.getElementById("suivant").addEventListener("click", allerSuivant);
+document.getElementById("filtre").addEventListener("change", appliquerFiltre);
+
+appliquerFiltre();

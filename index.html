@@ -3,49 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TP2 — Fonctions</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        margin: 1rem;
-      }
-      img {
-        max-width: 120px;
-        vertical-align: top;
-      }
-      .aperçu {
-        margin: 1rem 0;
-      }
-    </style>
+    <title>TP3 — Carrousel (DOM)</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>TP2 — Fonctions : liste, filtre, sélection</h1>
+    <h1>TP3 — Carrousel en JavaScript</h1>
     <p>
-      Le catalogue est décrit dans <code>main.js</code> (tableau d’objets). Ce TP porte sur les
-      <strong>fonctions</strong> qui filtrent et sélectionnent des entrées dans ce tableau. Les
-      résultats se lisent dans la <strong>console</strong> (F12). La manipulation du DOM (afficher
-      la liste à l’écran, réagir aux clics) sera vue au <strong>TP suivant</strong>.
+      On reprend le <strong>catalogue</strong> et les fonctions du TP2 (<code>filtrerParCategorie</code>,
+      <code>selectionner</code>…), et on affiche les images dans le DOM : boutons, image, légende,
+      compteur et pastilles générées en JavaScript.
     </p>
 
-    <p class="aperçu">
-      Aperçu statique des fichiers (HTML fixe, sans JavaScript sur ces balises) :
-      <img src="assets/nature-1.svg" alt="Prairie" />
-      <img src="assets/nature-2.svg" alt="Montagne" />
-      <img src="assets/ville-1.svg" alt="Quartier" />
-      <img src="assets/ville-2.svg" alt="Silhouettes" />
-    </p>
+    <label>
+      Filtrer (même idée que le TP2, appliquée au carrousel)
+      <select id="filtre">
+        <option value="toutes">Toutes</option>
+        <option value="nature">Nature</option>
+        <option value="ville">Ville</option>
+      </select>
+    </label>
+
+    <div id="indicateurs" aria-label="Aller à la diapositive"></div>
+
+    <div class="carousel">
+      <button type="button" id="precedent" aria-label="Image précédente">←</button>
+      <figure>
+        <img
+          id="image-principale"
+          src="assets/nature-1.svg"
+          alt="Prairie"
+          width="400"
+          height="300"
+        />
+        <figcaption id="legende"></figcaption>
+      </figure>
+      <button type="button" id="suivant" aria-label="Image suivante">→</button>
+    </div>
+    <p id="compteur"></p>
 
     <h2>À faire</h2>
     <ul>
-      <li>Ouvrir la console : vérifier les messages et les tableaux renvoyés par le filtrage.</li>
+      <li>Parcourir <code>main.js</code> : repérer où le DOM est lu (<code>getElementById</code>) et modifié.</li>
+      <li>Ajouter une image au catalogue (fichier dans <code>assets/</code>) et vérifier le carrousel.</li>
       <li>
-        Dans la console, tester vous-même : <code>filtrerParCategorie(catalogue, "nature")</code>,
-        <code>selectionner(trouverParId(catalogue, 1))</code> puis <code>imageSelectionnee</code>.
-      </li>
-      <li>Ajouter une entrée au tableau <code>catalogue</code> (nouvelle image dans <code>assets/</code>).</li>
-      <li>
-        Écrire une fonction <code>compterParCategorie(liste, categorie)</code> qui retourne le nombre
-        d’images de cette catégorie ; l’appeler dans un <code>console.log</code>.
+        Bonus : écouter <code>keydown</code> sur <code>document</code> pour passer à la diapositive
+        précédente / suivante avec les flèches du clavier.
       </li>
     </ul>
 
