@@ -1,14 +1,15 @@
 /**
- * TP3 — Carrousel : données + fonctions du TP2, affichage et événements (DOM).
- * Les chemins d’images sont relatifs à la page HTML (ici : dossier racine du projet).
+ * TP4 — Carrousel avec jQuery (même comportement que le TP3 en JavaScript pur).
+ * Chemins des images relatifs à tp4/index.html.
  */
 
 const catalogue = [
-  { id: 1, titre: "Prairie", categorie: "nature", fichier: "assets/nature-1.svg" },
-  { id: 2, titre: "Montagne", categorie: "nature", fichier: "assets/nature-2.svg" },
-  { id: 3, titre: "Quartier", categorie: "ville", fichier: "assets/ville-1.svg" },
-  { id: 4, titre: "Silhouettes", categorie: "ville", fichier: "assets/ville-2.svg" },
-];
+    { id: 1, titre: "Prairie", categorie: "nature", fichier: "assets/nature-1.svg" },
+    { id: 2, titre: "Montagne", categorie: "nature", fichier: "assets/nature-2.svg" },
+    { id: 3, titre: "Quartier", categorie: "ville", fichier: "assets/ville-1.svg" },
+    { id: 4, titre: "Silhouettes", categorie: "ville", fichier: "assets/ville-2.svg" },
+  ];
+  
 
 function filtrerParCategorie(liste, categorie) {
   if (categorie === "toutes") {
@@ -32,83 +33,74 @@ function selectionner(image) {
   return imageSelectionnee;
 }
 
-/* ---------- Carrousel (index dans la liste affichée) ---------- */
+jQuery(function ($) {
+  let slides = catalogue;
+  let indexCourant = 0;
 
-let slides = catalogue;
-let indexCourant = 0;
+  function afficherSlide(nouvelIndex) {
+    const $img = $("#image-principale");
 
-function afficherSlide(nouvelIndex) {
-  const imgEl = document.getElementById("image-principale");
-  const legendeEl = document.getElementById("legende");
-  const compteurEl = document.getElementById("compteur");
-  const btnPrec = document.getElementById("precedent");
-  const btnSuiv = document.getElementById("suivant");
-
-  if (slides.length === 0) {
-    imgEl.removeAttribute("src");
-    imgEl.alt = "";
-    legendeEl.textContent = "Aucune image dans cette sélection.";
-    compteurEl.textContent = "";
-    btnPrec.disabled = true;
-    btnSuiv.disabled = true;
-    construireIndicateurs();
-    return;
-  }
-
-  indexCourant = ((nouvelIndex % slides.length) + slides.length) % slides.length;
-  const image = slides[indexCourant];
-  selectionner(image);
-
-  imgEl.src = image.fichier;
-  imgEl.alt = image.titre;
-  legendeEl.textContent = image.titre + " — " + image.categorie;
-  compteurEl.textContent = String(indexCourant + 1) + " / " + String(slides.length);
-
-  btnPrec.disabled = false;
-  btnSuiv.disabled = false;
-
-  construireIndicateurs();
-}
-
-function allerPrecedent() {
-  afficherSlide(indexCourant - 1);
-}
-
-function allerSuivant() {
-  afficherSlide(indexCourant + 1);
-}
-
-/**
- * Recrée les boutons-pastilles (exemple de création d’éléments dans le DOM).
- */
-function construireIndicateurs() {
-  const conteneur = document.getElementById("indicateurs");
-  conteneur.innerHTML = "";
-
-  for (let i = 0; i < slides.length; i++) {
-    const bouton = document.createElement("button");
-    bouton.type = "button";
-    bouton.textContent = String(i + 1);
-    bouton.setAttribute("aria-label", "Image " + String(i + 1));
-    if (i === indexCourant) {
-      bouton.classList.add("actif");
+    if (slides.length === 0) {
+      $img.removeAttr("src").attr("alt", "");
+      $("#legende").text("Aucune image dans cette sélection.");
+      $("#compteur").text("");
+      $("#precedent, #suivant").prop("disabled", true);
+      construireIndicateurs();
+      return;
     }
-    const index = i;
-    bouton.addEventListener("click", function () {
-      afficherSlide(index);
-    });
-    conteneur.appendChild(bouton);
+
+    indexCourant = ((nouvelIndex % slides.length) + slides.length) % slides.length;
+    const image = slides[indexCourant];
+    selectionner(image);
+
+    $img.attr("src", image.fichier).attr("alt", image.titre);
+    $("#legende").text(image.titre + " — " + image.categorie);
+    $("#compteur").text(String(indexCourant + 1) + " / " + String(slides.length));
+    $("#precedent, #suivant").prop("disabled", false);
+
+    construireIndicateurs();
   }
-}
 
-function appliquerFiltre() {
-  const valeur = document.getElementById("filtre").value;
-  slides = filtrerParCategorie(catalogue, valeur);
-  afficherSlide(0);
-}
+  function allerPrecedent() {
+    afficherSlide(indexCourant - 1);
+  }
 
-document.getElementById("precedent").addEventListener("click", allerPrecedent);
-document.getElementById("suivant").addEventListener("click", allerSuivant);
-document.getElementById("filtre").addEventListener("change", appliquerFiltre);
+  function allerSuivant() {
+    afficherSlide(indexCourant + 1);
+  }
 
-appliquerFiltre();
+  function construireIndicateurs() {
+    const $conteneur = $("#indicateurs");
+    $conteneur.empty();
+
+    for (let i = 0; i < slides.length; i++) {
+      const $bouton = $("<button>", {
+        type: "button",
+        text: String(i + 1),
+        "aria-label": "Image " + String(i + 1),
+      });
+      if (i === indexCourant) {
+        $bouton.addClass("actif");
+      }
+      const index = i;
+      $bouton.on("click", function () {
+        afficherSlide(index);
+      });
+      $conteneur.append($bouton);
+    }
+  }
+
+  function appliquerFiltre() {
+    const valeur = $("#filtre").val();
+    slides = filtrerParCategorie(catalogue, valeur);
+    afficherSlide(0);
+  }
+
+  $("#precedent").on("click", allerPrecedent);
+  $("#suivant").on("click", allerSuivant);
+  $("#filtre").on("change", appliquerFiltre);
+
+  appliquerFiltre();
+
+  console.log("TP4 jQuery : carrousel initialisé.");
+});

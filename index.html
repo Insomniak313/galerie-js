@@ -3,19 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TP3 — Carrousel (DOM)</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>TP4 — Carrousel avec jQuery</title>
+    <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
-    <h1>TP3 — Carrousel en JavaScript</h1>
+    <h1>TP4 — Même carrousel, avec jQuery</h1>
     <p>
-      On reprend le <strong>catalogue</strong> et les fonctions du TP2 (<code>filtrerParCategorie</code>,
-      <code>selectionner</code>…), et on affiche les images dans le DOM : boutons, image, légende,
-      compteur et pastilles générées en JavaScript.
+      Même logique que le <strong>TP3</strong> (catalogue, filtre, diapositives). Ici la manipulation du
+      DOM passe par <strong>jQuery</strong> : <code>$()</code>, <code>.on()</code>, <code>.text()</code>,
+      <code>.attr()</code>, <code>.empty()</code>, <code>.append()</code>, etc. La bibliothèque est chargée
+      depuis un CDN (connexion Internet nécessaire pour ce fichier).
     </p>
 
     <label>
-      Filtrer (même idée que le TP2, appliquée au carrousel)
+      Filtrer
       <select id="filtre">
         <option value="toutes">Toutes</option>
         <option value="nature">Nature</option>
@@ -26,31 +27,36 @@
     <div id="indicateurs" aria-label="Aller à la diapositive"></div>
 
     <div class="carousel">
-      <button type="button" id="precedent" aria-label="Image précédente">←</button>
       <figure>
         <img
           id="image-principale"
-          src="assets/nature-1.svg"
+          src="../assets/nature-1.svg"
           alt="Prairie"
           width="400"
           height="300"
         />
         <figcaption id="legende"></figcaption>
       </figure>
+      <button type="button" id="precedent" aria-label="Image précédente">←</button>
       <button type="button" id="suivant" aria-label="Image suivante">→</button>
     </div>
     <p id="compteur"></p>
 
     <h2>À faire</h2>
     <ul>
-      <li>Parcourir <code>main.js</code> : repérer où le DOM est lu (<code>getElementById</code>) et modifié.</li>
-      <li>Ajouter une image au catalogue (fichier dans <code>assets/</code>) et vérifier le carrousel.</li>
       <li>
-        Bonus : écouter <code>keydown</code> sur <code>document</code> pour passer à la diapositive
-        précédente / suivante avec les flèches du clavier.
+        Comparer <code>tp4/main.js</code> avec le <code>main.js</code> du TP3 : repérer les équivalents
+        jQuery pour <code>getElementById</code>, <code>addEventListener</code>, <code>textContent</code>,
+        <code>innerHTML</code>, <code>createElement</code>…
+      </li>
+      <li>Ajouter une entrée au tableau <code>catalogue</code> et le fichier dans <code>assets/</code>.</li>
+      <li>
+        Bonus : brancher les flèches clavier avec <code>$(document).on("keydown", …)</code> (codes
+        <code>ArrowLeft</code> / <code>ArrowRight</code>).
       </li>
     </ul>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="main.js"></script>
   </body>
 </html>
